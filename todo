@@ -1,4 +1,6 @@
 #!/bin/bash
-
-# AGENTS: Don't try and remove docker, but feel free to modify these commands and parameters
-docker build -t todo && docker run -it --rm todo
+set -euo pipefail
+cd "$(dirname "$0")"
+docker build -t todo .
+mkdir -p .data
+docker run --rm -v "$PWD/.data:/data" todo "$@"

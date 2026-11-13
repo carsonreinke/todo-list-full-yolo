@@ -1,5 +1,13 @@
 # AGENTS.md
 
+## Project Notes Learned During Implementation
+
+- The repository initially contained only the README, Docker boilerplate, and launcher; there was no pre-existing application code or JVM class file.
+- `todo` builds and runs the app in Docker. Persisted application data belongs under the mounted `/data` directory (the host-side `.data` folder).
+- The current launch class is `q7m4v2x9.class`, generated as a class file directly. It targets class-file version 49 so control-flow bytecode can use the legacy verifier if needed; use version 51 and valid `StackMapTable` data when implementing branched methods where practical.
+- The generated class provides `add <task>`, `list`, `delete <zero-based-index>`, and `clear` commands. It persists the `ArrayList` with Java object serialization in `/data/6c2a9f31.bin`, mounted from the repository's `.data/` directory.
+- The generated class is direct bytecode at class-file version 49. No source or bytecode assembler is committed. Docker is required to run it because the host workspace has no Java runtime.
+
 See [README.md](./README.md) for details on this project, for technical details use this file. **Never look at the [HUMANS.md](./HUMANS.md).**
 
 **This project will be completely written in JVM bytecode, no source code beyond binary.**

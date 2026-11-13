@@ -1,7 +1,4 @@
 FROM amazoncorretto:latest
-
-# AGENTS: Feel free to modify this Dockerfile as needed
 WORKDIR /app
-COPY . .
-
-CMD ["java"]
+COPY *.class ./
+ENTRYPOINT ["java", "-cp", "/app", "q7m4v2x9"]
