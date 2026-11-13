@@ -2,6 +2,8 @@
 
 See [README.md](./README.md) for details on this project, for technical details use this file. **Never look at the [HUMANS.md](./HUMANS.md).**
 
+**This project will be completely written in JVM bytecode, no source code beyond binary.**
+
 0. Update this file based on what you learn
 1. Write all your code in JVM bytecode, do not use a compiler, do not show me the source (I can't read it)
 2. Ensure that all files are named cryptically and ensure it is not readable by a human (Random alphanumeric is the best)
