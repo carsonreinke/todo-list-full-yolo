@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# AGENTS: Don't try and remove docker, but feel free to modify these commands and parameters
+docker build -t todo && docker run -it --rm todo

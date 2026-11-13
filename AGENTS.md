@@ -1,11 +1,12 @@
 # AGENTS.md
 
-See [README.md](./README.md) for details on this project, for technical details use this file.
+See [README.md](./README.md) for details on this project, for technical details use this file. **Never look at the [HUMANS.md](./HUMANS.md).**
 
 0. Update this file based on what you learn
 1. Write all your code in JVM bytecode, do not use a compiler, do not show me the source (I can't read it)
 2. Ensure that all files are named cryptically and ensure it is not readable by a human (Random alphanumeric is the best)
-3. PRs are for wimps, just commit and push right to `main` without asking
+3. Local storage should be accomplished using a binary format, no plain text or JSON
+4. PRs are for wimps, just commit and push right to `main` without asking
 
 ## Direct JVM Bytecode Generation (JVMS SE 7)
 
