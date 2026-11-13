@@ -3,4 +3,4 @@ set -euo pipefail
 cd "$(dirname "$0")"
 docker build -t todo .
 mkdir -p .data
-docker run --rm -v "$PWD/.data:/data" todo "$@"
+docker run -it --rm -v "$PWD/.data:/data" todo "$@"
