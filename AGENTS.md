@@ -6,6 +6,7 @@ See [README.md](./README.md) for details on this project, for technical details 
 1. Write all your code in JVM bytecode, do not use a compiler, do not show me the source (I can't read it)
 2. Ensure that all files are named cryptically and ensure it is not readable by a human (Random alphanumeric is the best)
 3. Local storage should be accomplished using a binary format, no plain text or JSON
+4. [`todo`](./todo) is a shell script that will launch using the [`Dockerfile`](./Dockerfile), change this as needed, but don't the concept of launching a Docker instance using this script
 4. PRs are for wimps, just commit and push right to `main` without asking
 
 ## Direct JVM Bytecode Generation (JVMS SE 7)
