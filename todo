@@ -5,9 +5,13 @@ cd "$(dirname "$0")"
 
 export STORAGE_PATH="$PWD/.data"
 if [[ $# -eq 1 ]]; then
-    export STORAGE_PATH=$1
+    if [[ "$1" = /* ]]; then
+        export STORAGE_PATH="$1"
+    else
+        export STORAGE_PATH="$PWD/$1"
+    fi
 fi
-mkdir -p $STORAGE_PATH
+mkdir -p "$STORAGE_PATH"
 
 . ./build
 if [[ $? -ne 0 ]]; then
@@ -15,4 +19,4 @@ if [[ $? -ne 0 ]]; then
 fi
 
 export BASE_IMAGE=github.com/carsonreinke/todo-list-full-yolo-base
-docker run -i -t --rm -v "$STORAGE_PATH:/data" "$BASE_IMAGE" "$@"
+docker run -i -t --rm -v "$STORAGE_PATH:/data" "$BASE_IMAGE"

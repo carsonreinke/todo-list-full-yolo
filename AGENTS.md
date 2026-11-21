@@ -4,11 +4,12 @@
 
 - The repository initially contained only the README, Docker boilerplate, and launcher; there was no pre-existing application code or JVM class file.
 - `todo` builds and runs the app in Docker. Persisted application data belongs under the mounted `/data` directory (the host-side `.data` folder).
-- The current launch class is `q7m4v2x9.class`, generated as a class file directly. It targets class-file version 49 so control-flow bytecode can use the legacy verifier if needed; use version 51 and valid `StackMapTable` data when implementing branched methods where practical.
-- The generated class provides a line-oriented interactive menu (`a`, `l`, `t`, `e`, `d`, `p`, `g`, `c`, `q`) and equivalent command-line actions (`add`, `list`, `done`, `edit`, `delete`, `priority`, `tag`, `clear`). Tasks are stored as four-element string arrays containing title, status, priority, and tag; an `ArrayList` of these records is serialized in binary at `/data/6c2a9f31.bin`, mounted from `.data/`.
+- The launch artifact is `TodoApp.class`, generated as a class file directly. It targets class-file version 49 so control-flow bytecode can use the legacy verifier if needed; use version 51 and valid `StackMapTable` data when implementing branched methods where practical.
+- `TodoApp.class` renders a checkbox-and-priority task list and supports a selected row, add, toggle, edit, delete, priority, tag, clear-completed, and quit actions. Records are four-element string arrays containing title, status, priority, and tag; an `ArrayList` is serialized in binary at `/data/6c2a9f31.bin`.
 - The generated class is direct bytecode at class-file version 49. No source or bytecode assembler is committed. Docker is required to run it because the host workspace has no Java runtime.
 - Do not edit `README.md`; its contents are user-owned behavioral requirements. Implement the behavior it documents and record technical findings here instead.
-- The interactive menu prompts for task indices instead of maintaining a cursor. Arrow-key navigation, Space/Enter toggles, real-time search, and view filtering from the README remain to be implemented.
+- The current screen matches the README's title, selected-row marker, checkbox, and priority presentation. Search, All/Pending/Completed filtering, counters, color, and raw immediate key handling still need work; input is read one line at a time, so arrow and Space actions require Enter.
+- `./test` runs the Node TUI tests in Docker. Give test processes a `-Dtodo.data` path under `/app/tests/.data` so task tests never share the user's mounted `/data` store.
 
 See [README.md](./README.md) for details on this project, for technical details use this file. **Never look at the [HUMANS.md](./HUMANS.md).**
 

@@ -9,7 +9,7 @@ test('todo', async (t) => {
     fs.rmSync('/app/tests/.data', { recursive: true, force: true });
     fs.mkdirSync('/app/tests/.data');
 
-    tester = new createTester('java -cp /app q7m4v2x9', {
+    tester = new createTester('java -Dtodo.data=/app/tests/.data/6c2a9f31.bin -cp /app TodoApp', {
       cols: 100,
       rows: 30
     });
@@ -22,8 +22,60 @@ test('todo', async (t) => {
     }
   });
 
-  await test('quitting', async (t) => {
-    await tester.waitForText('[a] add  [l] list  [t] toggle  [e] edit  [d] delete  [p] priority  [g] tag  [c] clear  [q] quit');
-    await tester.sendText('q');
+  const enter = async (text) => {
+    await tester.sendText(text);
+    await tester.sendKey('Enter');
+  };
+
+  await test('supports the documented task actions', async (t) => {
+    await tester.waitForText('📝 TODO LIST');
+    await tester.waitForText('Space/Enter: Toggle');
+
+    await enter('a');
+    await tester.waitForText('Task text:');
+    await enter('Write release notes');
+    await tester.waitForText('> 0: [ ] [MED] Write release notes');
+
+    await enter('t');
+    await tester.waitForText('> 0: [x] [MED] Write release notes');
+
+    await enter('e');
+    await tester.waitForText('Task text:');
+    await enter('Publish release notes');
+    await tester.waitForText('> 0: [x] [MED] Publish release notes');
+
+    await enter('p');
+    await tester.waitForText('> 0: [x] [HIGH] Publish release notes');
+    await enter('g');
+    await tester.waitForText('Tag:');
+    await enter('release');
+    await tester.waitForText('> 0: [x] [HIGH] Publish release notes #release');
+    await enter('d');
+    await tester.waitForText('(no tasks yet)');
+
+    await enter('a');
+    await enter('Keep pending');
+    await enter('a');
+    await enter('Remove completed');
+    await tester.waitForText('> 1: [ ] [MED] Remove completed');
+
+    await enter('k');
+    await tester.waitForText('> 0: [ ] [MED] Keep pending');
+    await enter(' ');
+    await tester.waitForText('> 0: [x] [MED] Keep pending');
+
+    await enter('c');
+    await tester.waitForText('> 0: [ ] [MED] Remove completed');
+    await enter('q');
+
+    await tester.stop();
+    tester = new createTester('java -Dtodo.data=/app/tests/.data/6c2a9f31.bin -cp /app TodoApp', {
+      cols: 100,
+      rows: 30
+    });
+    await tester.start();
+    await tester.waitForText('📝 TODO LIST');
+    await tester.waitForText('> 0: [ ] [MED] Remove completed');
+    await enter('q');
   });
 });
