@@ -36,6 +36,12 @@ Launch the interactive interface simply by running:
 todo
 ```
 
+This will use the current directory for storage under `.data`. Specify the directory as an argument for a different storage location:
+
+```bash
+todo some-directory
+```
+
 ### ⌨️ Keyboard Shortcuts
 
 Once inside the interactive session, use the following keys to manage your list:

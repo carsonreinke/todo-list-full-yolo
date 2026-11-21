@@ -1,6 +1,18 @@
 #!/bin/bash
+
 set -euo pipefail
 cd "$(dirname "$0")"
-docker build -t todo .
-mkdir -p .data
-docker run -it --rm -v "$PWD/.data:/data" todo "$@"
+
+export STORAGE_PATH="$PWD/.data"
+if [[ $# -eq 1 ]]; then
+    export STORAGE_PATH=$1
+fi
+mkdir -p $STORAGE_PATH
+
+. ./build
+if [[ $? -ne 0 ]]; then
+    exit $?
+fi
+
+export BASE_IMAGE=github.com/carsonreinke/todo-list-full-yolo-base
+docker run -i -t --rm -v "$STORAGE_PATH:/data" "$BASE_IMAGE" "$@"

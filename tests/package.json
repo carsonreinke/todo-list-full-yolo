@@ -1,0 +1,6 @@
+{
+    "type": "module",
+    "dependencies": {
+        "tui-tester": "^0.3.0"
+    }
+}

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -euo pipefail
+
+. ./build
+if [[ $? -ne 0 ]]; then
+    exit $?
+fi
+
+cd "$(dirname "$0")/tests"
+
+export TEST_IMAGE=github.com/carsonreinke/todo-list-full-yolo-tests
+docker build -q -t "$TEST_IMAGE" . >/dev/null
+if [[ $? -ne 0 ]]; then
+    exit $?
+fi
+
+docker run -i -t --rm "$TEST_IMAGE" "$@"
