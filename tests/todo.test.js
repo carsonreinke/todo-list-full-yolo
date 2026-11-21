@@ -1,14 +1,17 @@
 import { createTester } from 'tui-tester';
 import { test, beforeEach, afterEach } from 'node:test';
+import fs from 'fs';
 
 test('todo', async (t) => {
   let tester;
 
   await beforeEach(async () => {
+    fs.rmSync('/app/tests/.data', { recursive: true, force: true });
+    fs.mkdirSync('/app/tests/.data');
+
     tester = new createTester('java -cp /app q7m4v2x9', {
       cols: 100,
-      rows: 30,
-      debug: true
+      rows: 30
     });
     await tester.start();
   });
