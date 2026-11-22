@@ -10,6 +10,7 @@
 - Do not edit `README.md`; its contents are user-owned behavioral requirements. Implement the behavior it documents and record technical findings here instead.
 - The current screen matches the README's title, selected-row marker, checkbox, and priority presentation. Search, All/Pending/Completed filtering, counters, color, and raw immediate key handling still need work; input is read one line at a time, so arrow and Space actions require Enter.
 - `./test` runs the Node TUI tests in Docker. Give test processes a `-Dtodo.data` path under `/app/tests/.data` so task tests never share the user's mounted `/data` store.
+- If the binary store deserializes to an object other than the expected task `ArrayList`, startup uses an empty list instead of aborting. The test suite includes a binary legacy-object fixture for this recovery path.
 
 See [README.md](./README.md) for details on this project, for technical details use this file. **Never look at the [HUMANS.md](./HUMANS.md).**
 

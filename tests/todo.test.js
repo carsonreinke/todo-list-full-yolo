@@ -27,7 +27,7 @@ test('todo', async (t) => {
     await tester.sendKey('Enter');
   };
 
-  await test('supports the documented task actions', async (t) => {
+  await test('supports core task actions and binary persistence', async (t) => {
     await tester.waitForText('📝 TODO LIST');
     await tester.waitForText('Space/Enter: Toggle');
 
@@ -76,6 +76,20 @@ test('todo', async (t) => {
     await tester.start();
     await tester.waitForText('📝 TODO LIST');
     await tester.waitForText('> 0: [ ] [MED] Remove completed');
+    await enter('q');
+  });
+
+  await test('starts safely with an older serialized object in the store', async (t) => {
+    await tester.stop();
+    fs.copyFileSync('/app/tests/fixtures/4f8b2d61.bin', '/app/tests/.data/6c2a9f31.bin');
+
+    tester = new createTester('java -Dtodo.data=/app/tests/.data/6c2a9f31.bin -cp /app TodoApp', {
+      cols: 100,
+      rows: 30
+    });
+    await tester.start();
+    await tester.waitForText('📝 TODO LIST');
+    await tester.waitForText('(no tasks yet)');
     await enter('q');
   });
 });
