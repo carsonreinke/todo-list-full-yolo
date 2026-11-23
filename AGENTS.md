@@ -9,8 +9,8 @@
 - The generated class is direct bytecode at class-file version 49. No source or bytecode assembler is committed. Docker is required to run it because the host workspace has no Java runtime.
 - Never modify `README.md`; it is user-owned behavioral requirements and the implementation must follow it. Record technical findings in this file instead.
 - The interactive screen uses a framed list, color-coded checkboxes and priority labels, a selected-row marker, status counters, and All/Pending/Done views. `Tab` cycles the views, `/` prompts for a case-insensitive title filter, and `j`/`k` plus arrow keys move the selection.
-- The interactive app reads menu keys immediately. Docker configures the terminal for raw key input while preserving newline output, and restores terminal settings when the app exits. Add/edit/search text is read until Enter.
-- Search is applied after Enter rather than while each character is typed. Backspace removes the last typed character in add/edit/search prompts; Escape cancellation within those prompts is not implemented yet.
+- The interactive app reads menu keys immediately. Docker configures the terminal for raw key input while preserving newline output, and restores terminal settings when the app exits. Add/edit/search prompts are line editors that accept Enter, insert at the cursor, and handle Left/Right/Home/End and Backspace. Edit preloads the selected task title.
+- Search is applied after Enter rather than while each character is typed. Escape cancellation within text prompts is not implemented yet.
 - `./test` exercises keyboard actions, arrow navigation, status counts, views, search, persistence across processes, and recovery from an unexpected serialized object. Tests use isolated storage under `/app/tests/.data`.
 - `./test` runs the Node TUI tests in Docker. Give test processes a `-Dtodo.data` path under `/app/tests/.data` so task tests never share the user's mounted `/data` store.
 - If the binary store deserializes to an object other than the expected task `ArrayList`, startup uses an empty list instead of aborting. The test suite includes a binary legacy-object fixture for this recovery path.

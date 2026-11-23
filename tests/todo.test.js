@@ -97,10 +97,30 @@ test('edits the selected task title', async () => {
     await key(tester, 'a');
     await enter(tester, 'Old title');
     await key(tester, 'e');
-    await tester.waitForText('Edit task:');
-    await enter(tester, 'New title');
-    await tester.waitForText('> [ ] [MED] New title');
-    assert.doesNotMatch(await tester.getScreenText(), /Old title/);
+    await tester.waitForText('Edit task: Old title');
+    await enter(tester, ' revised');
+    await tester.waitForText('> [ ] [MED] Old title revised');
+  });
+});
+
+test('edits a prefilled title at the arrow-key cursor position', async () => {
+  await withApp(async (tester) => {
+    await key(tester, 'a');
+    await enter(tester, 'Old title');
+    await key(tester, 'e');
+    await tester.waitForText('Edit task: Old title');
+
+    await tester.sendKey('Home');
+    await tester.sendKey('Right');
+    await tester.sendKey('Right');
+    await tester.sendKey('Right');
+    await tester.sendText(' new');
+    await tester.sendKey('Left');
+    await tester.sendKey('Right');
+    await tester.sendKey('Up');
+    await tester.sendKey('Down');
+    await tester.sendKey('Enter');
+    await tester.waitForText('> [ ] [MED] Old new title');
   });
 });
 
@@ -109,12 +129,11 @@ test('removes the last typed character when editing a task', async () => {
     await key(tester, 'a');
     await enter(tester, 'Old title');
     await key(tester, 'e');
-    await tester.waitForText('Edit task:');
-    await tester.sendText('Publish releasx');
+    await tester.waitForText('Edit task: Old title');
     await tester.sendKey('Backspace');
-    await tester.sendText('e notes');
+    await tester.sendText('!');
     await tester.sendKey('Enter');
-    await tester.waitForText('> [ ] [MED] Publish release notes');
+    await tester.waitForText('> [ ] [MED] Old titl!');
   });
 });
 
