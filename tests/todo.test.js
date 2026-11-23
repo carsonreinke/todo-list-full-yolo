@@ -56,6 +56,18 @@ test('adds a task with pending status and medium priority', async () => {
   });
 });
 
+test('removes the last typed character when adding a task', async () => {
+  await withApp(async (tester) => {
+    await key(tester, 'a');
+    await tester.waitForText('New task:');
+    await tester.sendText('Write releasx');
+    await tester.sendKey('Backspace');
+    await tester.sendText('e notes');
+    await tester.sendKey('Enter');
+    await tester.waitForText('> [ ] [MED] Write release notes');
+  });
+});
+
 test('adds a task with the n shortcut', async () => {
   await withApp(async (tester) => {
     await key(tester, 'n');
@@ -89,6 +101,20 @@ test('edits the selected task title', async () => {
     await enter(tester, 'New title');
     await tester.waitForText('> [ ] [MED] New title');
     assert.doesNotMatch(await tester.getScreenText(), /Old title/);
+  });
+});
+
+test('removes the last typed character when editing a task', async () => {
+  await withApp(async (tester) => {
+    await key(tester, 'a');
+    await enter(tester, 'Old title');
+    await key(tester, 'e');
+    await tester.waitForText('Edit task:');
+    await tester.sendText('Publish releasx');
+    await tester.sendKey('Backspace');
+    await tester.sendText('e notes');
+    await tester.sendKey('Enter');
+    await tester.waitForText('> [ ] [MED] Publish release notes');
   });
 });
 
