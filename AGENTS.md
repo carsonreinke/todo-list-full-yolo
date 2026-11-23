@@ -7,8 +7,11 @@
 - The launch artifact is `TodoApp.class`, generated as a class file directly. It targets class-file version 49 so control-flow bytecode can use the legacy verifier if needed; use version 51 and valid `StackMapTable` data when implementing branched methods where practical.
 - `TodoApp.class` renders a checkbox-and-priority task list and supports a selected row, add, toggle, edit, delete, priority, tag, clear-completed, and quit actions. Records are four-element string arrays containing title, status, priority, and tag; an `ArrayList` is serialized in binary at `/data/6c2a9f31.bin`.
 - The generated class is direct bytecode at class-file version 49. No source or bytecode assembler is committed. Docker is required to run it because the host workspace has no Java runtime.
-- Do not edit `README.md`; its contents are user-owned behavioral requirements. Implement the behavior it documents and record technical findings here instead.
-- The current screen matches the README's title, selected-row marker, checkbox, and priority presentation. Search, All/Pending/Completed filtering, counters, color, and raw immediate key handling still need work; input is read one line at a time, so arrow and Space actions require Enter.
+- Never modify `README.md`; it is user-owned behavioral requirements and the implementation must follow it. Record technical findings in this file instead.
+- The interactive screen uses a framed list, color-coded checkboxes and priority labels, a selected-row marker, status counters, and All/Pending/Done views. `Tab` cycles the views, `/` prompts for a case-insensitive title filter, and `j`/`k` plus arrow keys move the selection.
+- The interactive app reads menu keys immediately. Docker configures the terminal for raw key input while preserving newline output, and restores terminal settings when the app exits. Add/edit/search text is read until Enter.
+- Search is applied after Enter rather than while each character is typed. Inline Escape cancellation and backspace editing inside text prompts are not implemented yet.
+- `./test` exercises keyboard actions, arrow navigation, status counts, views, search, persistence across processes, and recovery from an unexpected serialized object. Tests use isolated storage under `/app/tests/.data`.
 - `./test` runs the Node TUI tests in Docker. Give test processes a `-Dtodo.data` path under `/app/tests/.data` so task tests never share the user's mounted `/data` store.
 - If the binary store deserializes to an object other than the expected task `ArrayList`, startup uses an empty list instead of aborting. The test suite includes a binary legacy-object fixture for this recovery path.
 
