@@ -37,7 +37,7 @@ async function key(tester, value) {
   await tester.sendKey(value === 'Space' ? 'space' : value);
 }
 
-test('renders the empty framed list and zero counts', async () => {
+test('renders an empty list with zero counts', async () => {
   await withApp(async (tester) => {
     await tester.waitForText('[All]');
     await tester.waitForText('(no tasks yet)');
@@ -46,7 +46,7 @@ test('renders the empty framed list and zero counts', async () => {
   });
 });
 
-test('adds a task with the default pending status and medium priority', async () => {
+test('adds a task with pending status and medium priority', async () => {
   await withApp(async (tester) => {
     await key(tester, 'a');
     await tester.waitForText('New task:');
@@ -56,7 +56,7 @@ test('adds a task with the default pending status and medium priority', async ()
   });
 });
 
-test('accepts n as an add shortcut', async () => {
+test('adds a task with the n shortcut', async () => {
   await withApp(async (tester) => {
     await key(tester, 'n');
     await tester.waitForText('New task:');
@@ -65,7 +65,7 @@ test('accepts n as an add shortcut', async () => {
   });
 });
 
-test('Space and Enter toggle completion and update the counts', async () => {
+test('toggles completion with Space and Enter and updates counts', async () => {
   await withApp(async (tester) => {
     await key(tester, 'a');
     await enter(tester, 'Review pull request');
@@ -80,7 +80,7 @@ test('Space and Enter toggle completion and update the counts', async () => {
   });
 });
 
-test('edits the selected title', async () => {
+test('edits the selected task title', async () => {
   await withApp(async (tester) => {
     await key(tester, 'a');
     await enter(tester, 'Old title');
@@ -92,7 +92,7 @@ test('edits the selected title', async () => {
   });
 });
 
-test('cycles priority from medium through high, low, and medium', async () => {
+test('cycles priority through medium, high, low, and medium', async () => {
   await withApp(async (tester) => {
     await key(tester, 'a');
     await enter(tester, 'Rotate priority');
@@ -106,7 +106,7 @@ test('cycles priority from medium through high, low, and medium', async () => {
   });
 });
 
-test('deletes the selected row with d', async () => {
+test('deletes the selected task with d', async () => {
   await withApp(async (tester) => {
     await key(tester, 'a');
     await enter(tester, 'Remove me');
@@ -116,7 +116,7 @@ test('deletes the selected row with d', async () => {
   });
 });
 
-test('deletes the selected row with Backspace', async () => {
+test('deletes the selected task with Backspace', async () => {
   await withApp(async (tester) => {
     await key(tester, 'a');
     await enter(tester, 'Backspace target');
@@ -126,7 +126,7 @@ test('deletes the selected row with Backspace', async () => {
   });
 });
 
-test('Tab filters pending and completed tasks and cycles back to all', async () => {
+test('filters tasks by pending, done, and all views', async () => {
   await withApp(async (tester) => {
     await key(tester, 'a');
     await enter(tester, 'Completed item');
@@ -151,7 +151,7 @@ test('Tab filters pending and completed tasks and cycles back to all', async () 
   });
 });
 
-test('slash search matches titles without regard to case and can be cleared', async () => {
+test('searches titles without regard to case and clears the search', async () => {
   await withApp(async (tester) => {
     await key(tester, 'a');
     await enter(tester, 'Write release notes');
@@ -175,7 +175,7 @@ test('slash search matches titles without regard to case and can be cleared', as
   });
 });
 
-test('j/k and arrow keys move the selection and clamp at list bounds', async () => {
+test('moves the selection with j, k, and arrow keys within list bounds', async () => {
   await withApp(async (tester) => {
     await key(tester, 'a');
     await enter(tester, 'First');
@@ -193,7 +193,7 @@ test('j/k and arrow keys move the selection and clamp at list bounds', async () 
   });
 });
 
-test('clears completed tasks while preserving pending tasks', async () => {
+test('clears completed tasks and preserves pending tasks', async () => {
   await withApp(async (tester) => {
     await key(tester, 'a');
     await enter(tester, 'Completed');
@@ -208,7 +208,7 @@ test('clears completed tasks while preserving pending tasks', async () => {
   });
 });
 
-test('persists tasks across a fresh application process', async () => {
+test('persists tasks across process restarts', async () => {
   let tester = await startApp();
   try {
     await key(tester, 'a');
@@ -222,7 +222,7 @@ test('persists tasks across a fresh application process', async () => {
   }
 });
 
-test('starts safely with an older serialized object in the store', async () => {
+test('loads an empty list from an unexpected serialized object', async () => {
   fs.rmSync(dataDirectory, { recursive: true, force: true });
   fs.mkdirSync(dataDirectory, { recursive: true });
   fs.copyFileSync('/app/tests/fixtures/4f8b2d61.bin', dataFile);
