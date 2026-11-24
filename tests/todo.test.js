@@ -43,6 +43,9 @@ test('renders an empty list with zero counts', async () => {
     await tester.waitForText('(no tasks yet)');
     await tester.waitForText('0 pending • 0 completed');
     await tester.waitForText('Space: Toggle');
+    const emptyRow = (await tester.getScreenText()).split('\n').find((line) => line.includes('(no tasks yet)'));
+    assert.equal(emptyRow.length, 60);
+    assert.equal(emptyRow.at(-1), '│');
   });
 });
 
@@ -53,6 +56,9 @@ test('adds a task with pending status and medium priority', async () => {
     await enter(tester, 'Write release notes');
     await tester.waitForText('> [ ] [MED] Write release notes');
     await tester.waitForText('1 pending • 0 completed');
+    const taskRow = (await tester.getScreenText()).split('\n').find((line) => line.includes('Write release notes'));
+    assert.equal(taskRow.length, 60);
+    assert.equal(taskRow.at(-1), '│');
   });
 });
 
